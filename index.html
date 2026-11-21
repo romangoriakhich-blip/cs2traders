@@ -34,7 +34,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{background:#05070d}
+html{background:#05070d;scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
 body{margin:0;position:relative;z-index:0;background:radial-gradient(1000px 640px at 12% -8%,rgba(47,139,255,.17),transparent 60%),radial-gradient(800px 600px at 100% 6%,rgba(0,213,255,.09),transparent 60%),var(--bg);
   color:var(--text);font-family:var(--fbody);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1100px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
@@ -69,7 +69,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* первый экран */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;padding-block:60px 52px}
-.hero h1{font-size:clamp(30px,5.4vw,54px);margin-top:14px}
+.hero h1{font-size:clamp(28px,4.3vw,46px);margin-top:12px;text-wrap:initial}
+.hero .eyebrow{color:#81d4ff;letter-spacing:1.25px}
 .hero h1 span{color:var(--acc2)}
 .lead{font-size:clamp(16px,2.2vw,18.5px);color:var(--muted);margin:18px 0 26px;max-width:32em}
 .dl{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:470px}
@@ -117,7 +118,10 @@ section{padding-block:52px}
 .f p{margin:0;color:var(--muted);font-size:14.5px}
 .shot-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .shot-tabs button{font:inherit;font-size:14px;font-weight:600;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 16px;cursor:pointer}
+.shot-tabs button{transition:color .2s,background .2s,border-color .2s,transform .2s}
+.shot-tabs button:hover{color:var(--text);background:var(--panel2);border-color:var(--line2);transform:translateY(-1px)}
 .shot-tabs button.on{color:#fff;background:rgba(47,139,255,.18);border-color:var(--acc)}
+.shot-tabs button.on:hover{background:rgba(47,139,255,.26)}
 .shot{margin:0;border:1px solid var(--line2);border-radius:18px;overflow:hidden;background:var(--panel);box-shadow:0 20px 60px -30px rgba(47,139,255,.55)}
 .shot img{display:block;width:100%;height:auto;aspect-ratio:16/10}
 .shot figcaption{padding:14px 18px;color:var(--muted);font-size:14.5px;border-top:1px solid var(--line)}
@@ -165,8 +169,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 .orb.a{background:#1f5fd6;top:-180px;left:-160px;animation:drift 18s ease-in-out infinite alternate}
 .orb.b{background:#0aa6c9;top:30%;right:-220px;opacity:.22;animation:drift 22s ease-in-out infinite alternate-reverse}
 @keyframes drift{to{transform:translate(80px,60px)}}
-.hero h1{background:linear-gradient(90deg,#fff 0%,#cfe8ff 50%,var(--acc2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero h1 span{color:inherit}
+
 .btn-primary{position:relative;overflow:hidden}
 .btn-primary::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:shine 4s ease-in-out infinite}
 @keyframes shine{0%,70%{left:-60%}100%{left:130%}}
@@ -184,7 +187,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 .hook{margin-top:14px;font-size:13.5px;color:var(--muted);background:rgba(136,71,255,.1);border:1px solid rgba(136,71,255,.3);border-radius:12px;padding:10px 12px}
 .hook b{color:var(--text)}
 .nums div{justify-content:flex-end}
-.nums span{white-space:nowrap}
+.nums span{line-height:1.35;overflow-wrap:anywhere}
 @media (max-width:520px){.out .pz{font-size:12px}.out small{font-size:10.5px}.orb{width:340px;height:340px}}
 @media (prefers-reduced-motion:reduce){.orb,.res,.btn-primary::after{animation:none!important}}
 
@@ -213,7 +216,21 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";display:inline-block;font-size:22px;line-height:1;color:var(--acc2);flex:none;transition:transform .2s}
 .faq details[open] summary::after{transform:rotate(45deg)}
-.faq p{margin:0 0 16px;color:var(--muted);font-size:14.5px}
+.faq summary:hover{color:#fff}
+.faq .ans{overflow:hidden}
+@supports selector(details::details-content){
+  .faq details{interpolate-size:allow-keywords}
+  .faq details::details-content{block-size:0;opacity:0;overflow:hidden;
+    transition:block-size .32s cubic-bezier(.2,.7,.2,1),opacity .24s ease,content-visibility .32s allow-discrete}
+  .faq details[open]::details-content{block-size:auto;opacity:1}
+}
+.plan.recommended{border-color:#537fa8;background:linear-gradient(100deg,#162c43,var(--panel))}
+.plan.recommended.on{border-color:var(--acc)}
+.plan.recommended:hover{border-color:var(--acc2)}
+.plan .rec{color:#cceaff;background:#214567;border-radius:7px;font-size:12px;padding:2px 8px;white-space:nowrap}
+.faq p{margin:0;padding-bottom:16px;color:var(--muted);font-size:14.5px}
+.faq summary::after{transition:transform .3s}
+.head h2 .sub{display:block;margin-top:8px;font-family:var(--fbody);font-weight:600;font-size:.5em;letter-spacing:0;color:var(--muted)}
 .docs{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;color:var(--muted);padding-block:6px 4px}
 .docs a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(139,152,180,.35)}
 .docs a:hover{color:var(--text)}
@@ -228,7 +245,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   .nav .btn-primary{padding:11px 14px}
   .foot{flex-direction:column;align-items:flex-start;gap:14px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 /* широкие мониторы: увеличиваем всю страницу, чтобы не было мелко и пусто по краям */
 @media (min-width:1600px){body{zoom:1.2}}
 @media (min-width:1900px){body{zoom:1.35}}
@@ -260,13 +277,13 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 <main id="top">
 <div class="wrap hero" id="download">
   <div>
-    <div class="eyebrow" data-i="eyebrow">Контракты обмена CS2</div>
-    <h1 data-i="h1" data-html>Выгодные контракты обмена <span>за пару минут</span></h1>
-    <p class="lead" data-i="lead">CS2 Traders перебирает все коллекции, считает шансы и float и сверяет цены с настоящими продажами в Steam. Ты сразу видишь, какие скины купить и сколько это принесёт.</p>
+    <div class="eyebrow" data-i="eyebrow">Сканер контрактов обмена</div>
+    <h1 data-i="h1" data-html>Выгодные<br>контракты CS2</h1>
+    <p class="lead" data-i="lead">Найди контракты обмена для Steam и Market.CSGO. Программа покажет, какие скины купить, какой float выбрать и сколько можно получить после комиссии.</p>
     <div class="dl">
       <a class="btn btn-primary" href="download/CS2-Traders-Setup.exe" download>
         <span class="t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6 10.4 4.5v7.1H3zm0 12.8 7.4 1.1v-7H3zm8.3 1.2L21 21v-8.6h-9.7zm0-15.2v7.2H21V3z"/></svg>Windows</span>
-        <small data-i="win_sub">Установщик, Windows 10 и 11</small>
+        <small data-i="win_sub">Версия 1.3.4 · Windows 10 и 11</small>
       </a>
       <a class="btn btn-ghost" aria-disabled="true" style="pointer-events:none;opacity:.55">
         <span class="t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 9.4 19 6.8a.5.5 0 0 0-.9-.5l-1.5 2.6A9 9 0 0 0 12 8c-1.6 0-3.2.3-4.6 1L5.9 6.3a.5.5 0 1 0-.9.5l1.5 2.6A8 8 0 0 0 2.6 16h18.8a8 8 0 0 0-3.9-6.6M7.6 13.3a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8m8.8 0a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8"/></svg>Android</span>
@@ -304,6 +321,8 @@ footer{border-top:1px solid var(--line);margin-top:20px}
       <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></div><div><h3 data-i="f2h">Оценка надёжности</h3><p data-i="f2p">Показывает, как часто продаётся выпадающий скин, падает ли его цена и какой запас прибыли остаётся.</p></div></div>
       <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div><div><h3 data-i="f3h">Подсказка по float</h3><p data-i="f3p">Пишет, с каким float покупать каждый скин, чтобы выпал нужный износ.</p></div></div>
       <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z"/></svg></div><div><h3 data-i="f4h">Уведомления в Telegram</h3><p data-i="f4p">Сама ищет контракты раз в несколько часов и присылает только новые выгодные.</p></div></div>
+      <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><div><h3 data-i="f5h">Проверка всего списка</h3><p data-i="f5p">Программа уточняет подходящие варианты по очереди. Видно, сколько контрактов уже проверено и сколько ещё осталось.</p></div></div>
+      <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 19V5m0 14h14M8 15l4-4 3 2 5-6"/></svg></div><div><h3 data-i="f6h">Избранное и слежение за ценой</h3><p data-i="f6p">Сохраняй контракты. Для почти выгодных можно включить уведомление, когда цена изменится и контракт выйдет в плюс.</p></div></div>
     </div>
   </div>
 </section>
@@ -311,14 +330,14 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 <section id="shots">
   <div class="wrap">
     <div class="head"><h2 data-i="s_h">Как выглядит программа</h2><p data-i="s_p">Настоящие экраны, без монтажа.</p></div>
-    <div class="shot-tabs" role="tablist">
-      <button class="on" data-shot="0" data-i="s1">Результаты поиска</button>
-      <button data-shot="1" data-i="s2">Карточка контракта</button>
-      <button data-shot="2" data-i="s3">Настройка поиска</button>
+    <div class="shot-tabs" role="group" aria-label="Скриншоты приложения / App screenshots">
+      <button class="on" aria-pressed="true" data-shot="0" data-i="s1">Результаты поиска</button>
+      <button aria-pressed="false" data-shot="1" data-i="s2">Карточка контракта</button>
+      <button aria-pressed="false" data-shot="2" data-i="s3">Настройка поиска</button>
     </div>
     <figure class="shot">
       <img id="shot-img" src="img/app-results.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="CS2 Traders">
-      <figcaption id="shot-cap" data-i="sc1">Сотни сочетаний перебраны за секунды. Остались только те, что в плюсе по реальным ценам Steam.</figcaption>
+      <figcaption id="shot-cap" data-i="sc1">В результатах видны вложения, средняя выплата и шанс выйти в плюс. Почти выгодные контракты можно сохранить и отслеживать по цене.</figcaption>
     </figure>
   </div>
 </section>
@@ -328,7 +347,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
     <div class="head"><h2 data-i="h_h">Три шага</h2></div>
     <div class="steps">
       <div class="step"><div class="n">01</div><h3 data-i="s1h">Выбери, где торгуешь</h3><p data-i="s1p">Steam, автозакуп или Market.CSGO, и бюджет на один контракт.</p></div>
-      <div class="step"><div class="n">02</div><h3 data-i="s2h">Нажми «Найти»</h3><p data-i="s2p">Программа переберёт варианты и проверит лучшие по ценам Steam.</p></div>
+      <div class="step"><div class="n">02</div><h3 data-i="s2h">Нажми «Найти»</h3><p data-i="s2p">Программа найдёт варианты и проверит весь список кандидатов по ценам выбранного сценария.</p></div>
       <div class="step"><div class="n">03</div><h3 data-i="s3h">Открой карточку</h3><p data-i="s3p">Там написано, что купить, с каким float и сколько можно получить.</p></div>
     </div>
   </div>
@@ -336,7 +355,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 
 <section id="pricing">
   <div class="wrap">
-    <div class="head"><h2 data-i="p_h">10 дней бесплатно, дальше по подписке</h2><p data-i="p_p">Один ключ открывает все возможности. Чем длиннее срок, тем дешевле месяц.</p></div>
+    <div class="head"><h2 data-i="p_h" data-html>10 дней бесплатно<span class="sub">дальше по подписке</span></h2><p data-i="p_p">Один ключ открывает все возможности. Чем длиннее срок, тем дешевле месяц.</p></div>
     <div class="pricing">
       <div class="plans" role="radiogroup" id="plans"></div>
       <div class="sumbox">
@@ -377,53 +396,56 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 <script>
 (() => {
   const T = {
-    ru: {faq_h:'Частые вопросы',s_h:'Как выглядит программа',s_p:'Настоящие экраны, без монтажа.',s1:'Результаты поиска',s2:'Карточка контракта',s3:'Настройка поиска',sc1:'Сотни сочетаний перебраны за секунды. Остались только те, что в плюсе по реальным ценам Steam.',sc2:'По каждому контракту: что купить, с каким float, сколько получишь и насколько он надёжен.',sc3:'Выбери, где покупаешь и продаёшь, бюджет и что для тебя важнее. Остальное программа сделает сама.',d_offer:'Публичная оферта',d_privacy:'Политика конфиденциальности',d_refund:'Возврат средств',d_contacts:'Поддержка',nav_f:'Возможности',nav_h:'Как пользоваться',nav_p:'Цены',download:'Скачать',eyebrow:'Контракты обмена CS2',
-      h1:'Выгодные контракты обмена <span>за пару минут</span>',
-      lead:'CS2 Traders перебирает все коллекции, считает шансы и float и сверяет цены с настоящими продажами в Steam. Ты сразу видишь, какие скины купить и сколько это принесёт.',
-      win_sub:'Установщик, Windows 10 и 11',and_sub:'APK-файл, скоро',dl_note:'Первые 10 дней бесплатно, без ключа.',
+    ru: {faq_h:'Частые вопросы',s_h:'Как выглядит программа',s_p:'Настоящие экраны, без монтажа.',s1:'Результаты поиска',s2:'Карточка контракта',s3:'Настройка поиска',sc1:'В результатах видны вложения, средняя выплата и шанс выйти в плюс. Почти выгодные контракты можно сохранить и отслеживать по цене.',sc2:'По каждому контракту: что купить, с каким float, сколько получишь и насколько он надёжен.',sc3:'Выбери, где покупаешь и продаёшь, бюджет и что для тебя важнее. Остальное программа сделает сама.',d_offer:'Публичная оферта',d_privacy:'Политика конфиденциальности',d_refund:'Возврат средств',d_contacts:'Поддержка',nav_f:'Возможности',nav_h:'Как пользоваться',nav_p:'Цены',download:'Скачать',eyebrow:'Сканер контрактов обмена',rec:'Рекомендуем',
+      h1:'Выгодные<br>контракты CS2',
+      lead:'Найди контракты обмена для Steam и Market.CSGO. Программа покажет, какие скины купить, какой float выбрать и сколько можно получить после комиссии.',
+      win_sub:'Версия 1.3.4 · Windows 10 и 11',and_sub:'APK-файл, скоро',dl_note:'Первые 10 дней бесплатно, без ключа.',
       c_title:'Пример из найденных',c_chip:'Надёжный',c_buy:'Покупаешь',c_in_sub:'Армейское · Прямо с завода',c_out:'Может выпасть · цены в Steam',c_cost:'Вкладываешь',c_ev:'В среднем на руки',c_x3:'×3',c_hook:'3 из 6 скинов дороже вложенного. Лучший — <b class="nw">Five-SeveN | Дань прошлому</b>, в Steam 946 ₽.',c_chance:'Шанс выйти в плюс',c_profit:'Прибыль',
       f_h:'Что умеет программа',f_p:'Всё, что обычно считают вручную в таблицах, программа делает сама и показывает итог одной карточкой.',
       f1h:'Цены по реальным продажам',f1p:'Берёт медиану продаж в Steam за последний месяц. Один завышенный лот расчёт не испортит.',
       f2h:'Оценка надёжности',f2p:'Показывает, как часто продаётся выпадающий скин, падает ли его цена и какой запас прибыли остаётся.',
       f3h:'Подсказка по float',f3p:'Пишет, с каким float покупать каждый скин, чтобы выпал нужный износ.',
       f4h:'Уведомления в Telegram',f4p:'Сама ищет контракты раз в несколько часов и присылает только новые выгодные.',
+      f5h:'Проверка всего списка',f5p:'Программа уточняет подходящие варианты по очереди. Видно, сколько контрактов уже проверено и сколько ещё осталось.',f6h:'Избранное и слежение за ценой',f6p:'Сохраняй контракты. Для почти выгодных можно включить уведомление, когда цена изменится и контракт выйдет в плюс.',
       h_h:'Три шага',s1h:'Выбери, где торгуешь',s1p:'Steam, автозакуп или Market.CSGO, и бюджет на один контракт.',
-      s2h:'Нажми «Найти»',s2p:'Программа переберёт варианты и проверит лучшие по ценам Steam.',s3h:'Открой карточку',s3p:'Там написано, что купить, с каким float и сколько можно получить.',
-      p_h:'10 дней бесплатно, дальше по подписке',p_p:'Один ключ открывает все возможности. Чем длиннее срок, тем дешевле месяц.',
+      s2h:'Нажми «Найти»',s2p:'Программа найдёт варианты и проверит весь список кандидатов по ценам выбранного сценария.',s3h:'Открой карточку',s3p:'Там написано, что купить, с каким float и сколько можно получить.',
+      p_h:'10 дней бесплатно<span class="sub">дальше по подписке</span>',p_p:'Один ключ открывает все возможности. Чем длиннее срок, тем дешевле месяц.',
       plans:['1 месяц','3 месяца','6 месяцев','1 год','Навсегда'],per:(m,s)=>`${m} в месяц · экономия <b>${s}</b>`,per1:'Можно продлить в любой момент',perF:'Один платёж, без продлений',buy:p=>`Купить за ${p}`,
       l1:'Все сценарии: Steam, автозакуп, Market.CSGO',l2:'Контракты на ножи и перчатки',l3:'Автопоиск и уведомления в Telegram',l4:'Обновления программы на весь срок',
       pay:'Оплата криптовалютой (USDT, BTC и др.) или картой через Plati.market — подключаем. Пока ключ можно купить в Telegram: @CS2Tradersbot.',
       legal:'CS2 Traders помогает считать контракты обмена. Программа ничего не покупает и не продаёт сама и не просит данные аккаунта Steam. Расчёты основаны на текущих ценах, а они меняются. Это не финансовый совет. Counter-Strike 2 — товарный знак Valve Corporation, проект с Valve не связан.'},
-    en: {faq_h:'FAQ',s_h:'What the app looks like',s_p:'Real screens, no mock-ups. The app is available in English, Russian and Chinese.',s1:'Search results',s2:'Contract card',s3:'Search setup',sc1:'Hundreds of combinations checked in seconds. Only the ones that stay profitable at real Steam prices are left.',sc2:'For every contract: what to buy, which float, what you get back and how reliable it is.',sc3:'Pick where you buy and sell, your budget and what matters most. The app does the rest.',d_offer:'Terms of sale',d_privacy:'Privacy policy',d_refund:'Refunds',d_contacts:'Support',nav_f:'Features',nav_h:'How it works',nav_p:'Pricing',download:'Download',eyebrow:'CS2 trade-up contracts',
-      h1:'Profitable trade-ups <span>in a couple of minutes</span>',
-      lead:'CS2 Traders checks every collection, works out odds and float, and compares prices with real Steam sales. You see right away which skins to buy and what you can earn.',
-      win_sub:'Installer, Windows 10 and 11',and_sub:'APK file, coming soon',dl_note:'First 10 days free, no key needed.',
+    en: {faq_h:'FAQ',s_h:'What the app looks like',s_p:'Real screens, no mock-ups. The app is available in English, Russian and Chinese.',s1:'Search results',s2:'Contract card',s3:'Search setup',sc1:'Compare costs, average returns, and chances of profit. Save near-profitable trade-ups and track their prices.',sc2:'For every contract: what to buy, which float, what you get back and how reliable it is.',sc3:'Pick where you buy and sell, your budget and what matters most. The app does the rest.',d_offer:'Terms of sale',d_privacy:'Privacy policy',d_refund:'Refunds',d_contacts:'Support',nav_f:'Features',nav_h:'How it works',nav_p:'Pricing',download:'Download',eyebrow:'Trade-up scanner',rec:'Recommended',
+      h1:'Profitable<br>CS2 trade-ups',
+      lead:'Find trade-ups for Steam and Market.CSGO. See which skins to buy, what float to choose, and what you could get back after fees.',
+      win_sub:'Version 1.3.4 · Windows 10 and 11',and_sub:'APK file, coming soon',dl_note:'First 10 days free, no key needed.',
       c_title:'A real find',c_chip:'Reliable',c_buy:'You buy',c_in_sub:'Mil-Spec · Factory New',c_out:'Can drop · Steam prices',c_cost:'You pay',c_ev:'Average after fees',c_x3:'×3',c_hook:'3 of 6 skins are worth more than you put in. The best is <b class="nw">Five-SeveN | Retrobution</b>, $11.46 on Steam.',c_chance:'Chance of profit',c_profit:'Profit',
       f_h:'What the app does',f_p:'Everything people usually work out in spreadsheets, the app does for you and shows as a single card.',
       f1h:'Prices from real sales',f1p:'Uses the median of Steam sales over the last month, so one overpriced listing can’t skew the result.',
       f2h:'Reliability score',f2p:'Shows how often the result skin sells, whether its price is falling, and how much profit margin is left.',
       f3h:'Float guidance',f3p:'Tells you which float to buy each skin at to get the wear you need.',
       f4h:'Telegram alerts',f4p:'Searches every few hours and sends only new profitable contracts.',
+      f5h:'Full-list price checks',f5p:'The app checks candidates one by one and shows how many are done and how many are left.',f6h:'Favorites and price tracking',f6p:'Save trade-ups and get notified when price changes make a near-profitable trade-up profitable.',
       h_h:'Three steps',s1h:'Pick where you trade',s1p:'Steam, buy orders or Market.CSGO, plus a budget per contract.',
-      s2h:'Press “Find”',s2p:'The app tries every option and checks the best ones against Steam prices.',s3h:'Open the card',s3p:'It shows what to buy, at which float, and how much you can get back.',
-      p_h:'10 days free, then a subscription',p_p:'One key unlocks everything. The longer the term, the cheaper each month.',
+      s2h:'Press “Find”',s2p:'The app finds candidates and checks the full list against prices for your selected mode.',s3h:'Open the card',s3p:'It shows what to buy, at which float, and how much you can get back.',
+      p_h:'10 days free<span class="sub">then a subscription</span>',p_p:'One key unlocks everything. The longer the term, the cheaper each month.',
       plans:['1 month','3 months','6 months','1 year','Lifetime'],per:(m,s)=>`${m} per month · save <b>${s}</b>`,per1:'Renew any time',perF:'One payment, no renewals',buy:p=>`Buy for ${p}`,
       l1:'All modes: Steam, buy orders, Market.CSGO',l2:'Knife and glove contracts',l3:'Auto search and Telegram alerts',l4:'App updates for the whole term',
       pay:'Crypto (USDT, BTC and more) or card via Plati.market — coming soon. For now you can buy a key in Telegram: @CS2Tradersbot.',
       legal:'CS2 Traders helps you calculate trade-up contracts. It never buys or sells anything by itself and never asks for your Steam account. Calculations use current prices, which change. This is not financial advice. Counter-Strike 2 is a trademark of Valve Corporation; this project is not affiliated with Valve.'},
-    zh: {faq_h:'常见问题',s_h:'软件界面',s_p:'真实截图，未经修饰。软件支持中文、英文和俄文界面。',s1:'搜索结果',s2:'合同详情',s3:'搜索设置',sc1:'几秒内检查数百种组合，只保留按 Steam 真实价格仍能盈利的合同。',sc2:'每个合同都写明：买什么、什么磨损度、能拿回多少、可靠程度如何。',sc3:'选择在哪里买卖、预算和你最看重的指标，剩下的交给软件。',d_offer:'销售条款',d_privacy:'隐私政策',d_refund:'退款',d_contacts:'客服',nav_f:'功能',nav_h:'使用方法',nav_p:'价格',download:'下载',eyebrow:'CS2 汰换合同',
-      h1:'<span>几分钟内</span>找到赚钱的汰换合同',
-      lead:'CS2 Traders 会遍历所有收藏品，计算概率和磨损值，并与 Steam 真实成交价核对。你马上就能看到该买哪些皮肤、能赚多少。',
-      win_sub:'安装程序，Windows 10 和 11',and_sub:'APK 文件，即将推出',dl_note:'前 10 天免费，无需密钥。',
+    zh: {faq_h:'常见问题',s_h:'软件界面',s_p:'真实截图，未经修饰。软件支持中文、英文和俄文界面。',s1:'搜索结果',s2:'合同详情',s3:'搜索设置',sc1:'对比投入、平均回报和盈利概率。可以收藏接近盈利的合同并跟踪价格。',sc2:'每个合同都写明：买什么、什么磨损度、能拿回多少、可靠程度如何。',sc3:'选择在哪里买卖、预算和你最看重的指标，剩下的交给软件。',d_offer:'销售条款',d_privacy:'隐私政策',d_refund:'退款',d_contacts:'客服',nav_f:'功能',nav_h:'使用方法',nav_p:'价格',download:'下载',eyebrow:'汰换合同扫描器',rec:'推荐',
+      h1:'寻找有利可图的<br>CS2 汰换合同',
+      lead:'查找适用于 Steam 和 Market.CSGO 的汰换合同，了解该买哪些皮肤、选择什么磨损值，以及扣除手续费后预计能拿回多少。',
+      win_sub:'版本 1.3.4 · Windows 10 和 11',and_sub:'APK 文件，即将推出',dl_note:'前 10 天免费，无需密钥。',
       c_title:'真实案例',c_chip:'稳定',c_buy:'购买',c_in_sub:'军规级 · 崭新出厂',c_out:'可能获得 · Steam 价格',c_cost:'投入',c_ev:'扣费后平均',c_x3:'×3',c_hook:'6 个皮肤中有 3 个比投入更值钱。最好的是 <b class="nw">Five-SeveN | Retrobution</b>，Steam 价格 $11.46。',c_chance:'盈利概率',c_profit:'利润',
       f_h:'软件能做什么',f_p:'平时要在表格里手算的东西，软件自动算好，用一张卡片展示结果。',
       f1h:'按真实成交价计算',f1p:'取 Steam 近一个月成交价的中位数，个别虚高挂单不会影响结果。',
       f2h:'稳定性评估',f2p:'显示产出皮肤的成交频率、价格是否在下跌以及剩余的利润空间。',
       f3h:'磨损值提示',f3p:'告诉你每个皮肤该买什么磨损值，才能得到想要的外观。',
       f4h:'Telegram 通知',f4p:'每隔几小时自动搜索，只推送新的盈利合同。',
+      f5h:'核查整个列表',f5p:'软件逐个核查候选合同，显示已完成和剩余的数量。',f6h:'收藏和价格跟踪',f6p:'收藏合同，并在价格变动让接近盈利的合同转为盈利时接收通知。',
       h_h:'三个步骤',s1h:'选择交易平台',s1p:'Steam、求购或 Market.CSGO，以及每份合同的预算。',
-      s2h:'点击“查找”',s2p:'软件遍历所有方案，并用 Steam 价格核对最优的几个。',s3h:'打开卡片',s3p:'卡片上写明买什么、什么磨损值、能拿回多少。',
-      p_h:'免费 10 天，之后订阅',p_p:'一个密钥解锁全部功能。期限越长，每月越便宜。',
+      s2h:'点击“查找”',s2p:'软件会筛选候选合同，并按所选模式的价格核查整个列表。',s3h:'打开卡片',s3p:'卡片上写明买什么、什么磨损值、能拿回多少。',
+      p_h:'免费 10 天<span class="sub">之后订阅</span>',p_p:'一个密钥解锁全部功能。期限越长，每月越便宜。',
       plans:['1 个月','3 个月','6 个月','1 年','永久'],per:(m,s)=>`每月 ${m} · 节省 <b>${s}</b>`,per1:'随时续费',perF:'一次付款，无需续费',buy:p=>`购买 ${p}`,
       l1:'全部模式：Steam、求购、Market.CSGO',l2:'刀具和手套合同',l3:'自动搜索和 Telegram 通知',l4:'期内免费更新',
       pay:'即将支持加密货币（USDT、BTC 等）及通过 Plati.market 银行卡付款。目前可在 Telegram 购买密钥：@CS2Tradersbot。',
@@ -471,16 +493,22 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   };
   function renderFaq() {
     document.getElementById('faq-list').innerHTML = FAQ[lang].map(([q, a]) =>
-      `<details><summary>${q}</summary><p>${a}</p></details>`).join('');
+      `<details name="landing-faq"><summary>${q}</summary><div class="ans"><p>${a}</p></div></details>`).join('');
   }
   function renderPlans() {
     const t = T[lang], c = cur();
     document.getElementById('plans').innerHTML = MONTHS.map((m, i) => {
+      const recommended = m === 12;
       const save = m > 1 ? Math.round((1 - c.v[i] / (c.m * m)) * 100) : 0;
-      return `<button class="plan${i === sel ? ' on' : ''}" role="radio" aria-checked="${i === sel}" data-i="${i}">
-        <span class="rd"></span><span class="nm">${t.plans[i]}${save > 0 ? `<span class="sv">−${save}%</span>` : ''}</span><span class="pr">${c.f(c.v[i])}</span></button>`;
+      return `<button class="plan${recommended ? ' recommended' : ''}${i === sel ? ' on' : ''}" role="radio" aria-checked="${i === sel}" data-i="${i}">
+        <span class="rd"></span><span class="nm">${t.plans[i]}${recommended ? `<span class="rec">${t.rec}</span>` : ''}${save > 0 ? `<span class="sv">−${save}%</span>` : ''}</span><span class="pr">${c.f(c.v[i])}</span></button>`;
     }).join('');
-    document.querySelectorAll('.plan').forEach(b => b.onclick = () => { sel = +b.dataset.i; renderPlans(); });
+    document.querySelectorAll('.plan').forEach(b => b.onclick = () => {
+      const keyboard = b.matches(':focus-visible');
+      sel = +b.dataset.i;
+      renderPlans();
+      if (keyboard) document.querySelector('.plan.on').focus();
+    });
     const m = MONTHS[sel], p = c.v[sel];
     document.getElementById('s-price').textContent = c.f(p);
     document.getElementById('s-per').innerHTML = m === 0 ? t.perF : m === 1 ? t.per1 : t.per(c.f(lang === 'ru' ? Math.round(p / m) : Math.round(p / m * 10) / 10), c.f(c.m * m - p));
@@ -513,7 +541,10 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   const shotSrc = n => 'img/' + SHOTS[n] + (lang === 'ru' ? '' : '-' + lang) + '.webp';   // скриншоты на языке сайта
   document.querySelectorAll('.shot-tabs button').forEach(b => b.onclick = () => {
     const n = +b.dataset.shot;
-    document.querySelectorAll('.shot-tabs button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.shot-tabs button').forEach(x => {
+      x.classList.toggle('on', x === b);
+      x.setAttribute('aria-pressed', String(x === b));
+    });
     document.getElementById('shot-img').src = shotSrc(n);
     const cap = document.getElementById('shot-cap');
     cap.dataset.i = 'sc' + (n + 1); cap.textContent = T[lang][cap.dataset.i];
